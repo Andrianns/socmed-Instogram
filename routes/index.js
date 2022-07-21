@@ -17,9 +17,20 @@ router.use((req, res, next) => {
         next()
     }
 })
-router.get("/profile/:id",Controller.profile)
+router.get("/",Controller.explore)
+router.get("/comment/:id",Controller.exploreComment)
+router.post("/comment/:id",Controller.saveCommentExplore)
+router.get("/like/:id",Controller.exploreLike)
+
+router.get("/profile",Controller.profile)
 router.get("/profile/:id/addpost",Controller.addPost)
 router.post("/profile/:id/addpost",Controller.savePost)
-// router.get("/", Controller.listStrangerPost);
+router.get("/profile/:id/comment",Controller.readComment)
+router.post("/profile/:id/comment",Controller.saveCommentProfile)
+router.get("/profile/:id/edit",Controller.editProfile)
+router.post("/profile/:id/edit",Controller.updateProfile)
+router.get("/profile/:id/like",Controller.likePost)
+router.get("/profile/:id/delete",Controller.deletePost)
+
 
 module.exports = router

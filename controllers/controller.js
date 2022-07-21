@@ -1,7 +1,6 @@
 const {Post,StrangerPost,User,UserProfile,Comment} = require('../models')
-const { Op, where } = require('sequelize')
+const { Op } = require('sequelize')
 const bcrypt = require('bcryptjs');
-const { resolveSoa } = require('dns');
 class Controller {
 
   static register(req, res) {
@@ -35,7 +34,7 @@ class Controller {
 						req.session.UserId = user.id
 						// console.log(req.session)
 						// console.log(user)
-						return res.redirect(`/profile/${user.id}`)
+						return res.redirect(`/profile`)
 
 					} else {
 						const error = "Invalid Input Username or Password"
@@ -61,20 +60,22 @@ class Controller {
 
 
   static profile(req,res){
-    const {id} = req.params
+    const id = req.session.UserId 
     UserProfile.findOne({
       include:{
-        model:Post
+        model:Post,
+				order:[['caption','asc']]
       },
       attributes:{
         exclude:["id"]
       },
       where:{
         UserId : id
-      }
+      },
+			
     })
     .then((data)=>{
-      res.send(data)
+			// res.send(data)
       res.render('profile',{data})
     })
   }
@@ -90,7 +91,6 @@ class Controller {
       }
     })
     .then((data)=>{
-      
       res.render("addPost",{data})
     })
     .catch((err)=>{
@@ -103,12 +103,178 @@ class Controller {
     const {caption,totalLike,imageUrl,UserProfileId} = req.body
     Post.create({caption,totalLike,imageUrl,UserProfileId})
     .then(()=>{
-      res.redirect(`/profile/${userId}`)
+      res.redirect(`/profile`)
     })
     .catch((err)=>{
       res.send(err)
     })
   }
+
+	static readComment(req,res){
+		const {id} = req.params
+		Post.findByPk(id,{
+			include:{
+				model:Comment
+			}
+		})
+		.then((data)=>{
+			res.render('seeComment',{data})
+		})
+		.catch((err)=>{
+			res.send(err)
+		})
+	}
+
+	static saveCommentProfile(req,res){
+		const postId = req.params.id
+		const{comment,PostId} = req.body
+		Comment.create({comment,PostId})
+		.then(()=>{
+			res.redirect(`/profile/${postId}/comment`)
+		})
+	}
+
+	static editProfile(req,res){
+		const{id} = req.params
+    UserProfile.findOne({
+      where:{
+        UserId : id
+      }
+    })
+    .then((data)=>{
+			// res.send(data)
+      res.render('editProfile',{data})
+    })
+	}
+
+	static updateProfile(req,res){
+		// res.send(req.body)
+		const {id} = req.params
+		const {firstName,lastName,gender,phoneNumber} = req.body
+		UserProfile.update({firstName,lastName,gender,phoneNumber},{
+			where:{
+				id:id
+			}
+		})
+		.then(()=>{
+			res.redirect(`/profile`)
+		})
+		.catch((err)=>{
+			res.send(err)
+		})
+	}
+
+	static likePost(req,res){
+		const{id} = req.params
+		const userId = req.session.UserId 
+		Post.findByPk(id)
+		.then(({totalLike})=>{
+			return Post.update({
+				totalLike:totalLike+1
+			},{
+				where:{
+					id
+				}
+			})
+		})
+		.then(()=>{
+			res.redirect(`/profile`)
+		})
+		.catch((err)=>{
+			res.send(err)
+		})
+	}
+
+	static deletePost(req,res){
+		const {id} = req.params
+		const userId = req.session.UserId 
+		Post.destroy({
+			where:{
+				id:id
+			}
+		})
+
+		.then(()=>{
+			res.redirect(`/profile`)
+		})
+	}
+
+	static explore(req,res){
+		const userId = req.session.UserId 
+		const{search} = req.query
+    const options ={
+      where:{
+				UserProfileId:{
+				[Op.or]: {
+					[Op.is]: null,
+					[Op.ne]: userId
+				}
+			}
+		}
+  }
+    if(search){
+      options.where = {
+        caption:{
+          [Op.iLike] :`%${search}%`
+        }
+      }
+    }
+		Post.findAll(options)
+		.then((data)=>{
+			res.render('explore',{data})
+		})
+		.catch((err)=>{
+			res.send(err)
+		})
+	}
+	static exploreComment(req,res){
+		const {id} = req.params
+		Post.findByPk(id,{
+			include:{
+				model:Comment
+				}
+		})
+		
+		.then((data)=>{
+			// res.send(data)
+			res.render("exploreComment",{data})
+		})
+		.catch((err)=>{
+			res.send(err)
+		})
+	}
+
+	static saveCommentExplore(req,res){
+		const postId = req.params.id
+		const{comment,PostId} = req.body
+		Comment.create({comment,PostId})
+		.then(()=>{
+			res.redirect(`/comment/${postId}`)
+		})
+		.catch((err)=>{
+			res.send(err)
+		})
+	}
+
+	static exploreLike(req,res){
+		const{id} = req.params
+		Post.findByPk(id)
+		.then(({totalLike})=>{
+			return Post.update({
+				totalLike:totalLike+1
+			},{
+				where:{
+					id
+				}
+			})
+		})
+		.then(()=>{
+			res.redirect(`/`)
+		})
+		.catch((err)=>{
+			res.send(err)
+		})
+	}
 
 
 }

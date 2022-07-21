@@ -11,13 +11,13 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    let data = fs.readFileSync('./data/postStrangers.json','utf-8')
+    let data = fs.readFileSync('./data/posts.json','utf-8')
     data = JSON.parse(data).map(el=>{
       el.createdAt = new Date()
       el.updatedAt = new Date()
       return el
     })
-    return queryInterface.bulkInsert('StrangerPosts',data,{})
+    return queryInterface.bulkInsert('Posts',data,{})
   },
 
   down (queryInterface, Sequelize) {
@@ -27,6 +27,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return queryInterface.bulkDelete('StrangerPosts',null,{})
+    return queryInterface.bulkDelete('Posts',null,{})
   }
 };

@@ -14,13 +14,27 @@ module.exports = (sequelize, DataTypes) => {
       UserProfile.belongsTo(models.User)
       UserProfile.hasMany(models.Post)
     }
+
+    get fullName(){
+      return this.firstName+" "+this.lastName
+    }
   }
   UserProfile.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    gender: DataTypes.STRING,
-    phoneNumber: DataTypes.INTEGER,
-    UserId: DataTypes.INTEGER
+    firstName: {
+      type:DataTypes.STRING,
+    },
+    lastName: {
+      type:DataTypes.STRING,
+    },
+    gender: {
+      type:DataTypes.STRING,
+    },
+    phoneNumber: {
+      type:DataTypes.INTEGER,
+    },
+    UserId: {
+      type:DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'UserProfile',
