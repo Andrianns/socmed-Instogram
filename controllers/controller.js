@@ -2,6 +2,7 @@ const {Post,StrangerPost,User,UserProfile,Comment} = require('../models')
 const { Op, where } = require('sequelize')
 const bcrypt = require('bcryptjs');
 const { resolveSoa } = require('dns');
+// const session = require('express-session')
 class Controller {
 
   static register(req, res) {
@@ -27,14 +28,20 @@ class Controller {
 	}
 	static postLogin(req, res) {
 		const { username, password } = req.body
-		User.findOne({ where: { username } })
+
+    // console.log(req.session);
+    // const { id, name } = req.session
+    // console.log(req.sessionId);
+		User.findOne({ where: { username },
+      include: UserProfile } )
 			.then(user => {
 				if (user) {
 					const isValidPassword = bcrypt.compareSync(password, user.password)
 					if (isValidPassword) {
 						req.session.UserId = user.id
+            req.session.UserProfileId = user.UserProfile.id
 						// console.log(req.session)
-						// console.log(user)
+						// console.log(req.session)
 						return res.redirect(`/profile/${user.id}`)
 
 					} else {
@@ -74,7 +81,7 @@ class Controller {
       }
     })
     .then((data)=>{
-      res.send(data)
+      // res.send(data)
       res.render('profile',{data})
     })
   }
@@ -110,7 +117,26 @@ class Controller {
     })
   }
 
-
+  static feeds(req,res) {
+    // console.log(req.session); 
+    const id = req.session.UserProfileId
+    // console.log(id);
+    Post.findAll({
+      where: {
+        UserProfileId: {
+          [Op.ne]: id
+        }
+      }, include: {
+        model: UserProfile
+      }
+    })
+    .then(data => {
+      res.render('feeds', { data })
+      // res.send(data)
+    }).catch(err => {
+      res.send(err)
+    })
+  }
 }
 
 module.exports = Controller

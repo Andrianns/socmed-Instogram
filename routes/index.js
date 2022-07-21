@@ -20,6 +20,7 @@ router.use((req, res, next) => {
 router.get("/profile/:id",Controller.profile)
 router.get("/profile/:id/addpost",Controller.addPost)
 router.post("/profile/:id/addpost",Controller.savePost)
+router.get('/profile/:id/feeds', Controller.feeds)
 // router.get("/", Controller.listStrangerPost);
 
 module.exports = router
