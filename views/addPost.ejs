@@ -11,8 +11,8 @@
   <br>
   <%- include('./partials/navbar.ejs') %>
   <br><hr>
-
   <div class="container">
+  <%- include('./partials/errors.ejs') %>
   <form action="/profile/<%=data.UserId%>/addpost" method="post">
   <label for="">Caption</label><br>
   <input type="text" name="caption"><br> <br>

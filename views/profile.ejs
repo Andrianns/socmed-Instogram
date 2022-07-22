@@ -55,6 +55,7 @@
               <h5 class="card-text">
                 <%= el.caption %>
 							</h5>
+              <h6><%= getTime(el.createdAt) %> </h6>
 							<a href="/profile/<%=el.id%>/comment" class="btn btn-primary">See Comment</a>
               <a href="/profile/<%=el.id%>/like" class="btn btn-warning"> Like</a>
 							<a href="/profile/<%=el.id%>/delete" class="btn btn-danger">Delete</a>

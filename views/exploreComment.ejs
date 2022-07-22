@@ -32,7 +32,8 @@
             <br>
             <input type="text" name="comment"> <br> <br>
             <input type="hidden" name="PostId"value="<%=data.id%>">
-            <Button class="btn btn-danger">Add Comment</Button>
+            <Button class="btn btn-danger">Add Comment</Button> <br> <br>
+            <%- include('./partials/errors.ejs') %>
           </div>
         </div>
     </div>

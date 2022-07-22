@@ -34,6 +34,9 @@
     <div class="global-container"
         style="height: -100px; display: flex; align-items: center; justify-content: center; padding-top: 7rem;"></div>
     <div class="container mt-5">
+        <% if(error) {%>
+            <p style="color: red;"><%= error  %></p>  
+        <%} %>
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <form action="/login" method="post">

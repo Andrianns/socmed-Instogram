@@ -50,6 +50,7 @@
             <h5 class="card-text">
               <%= el.caption %>
             </h5>
+            <h6><%=getTime(el.createdAt)%></h6>
             <a href="/comment/<%=el.id%>" class="btn btn-primary">See Comment</a>
             <a href="/like/<%=el.id%>" class="btn btn-warning"> Like</a>
           </div>

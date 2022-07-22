@@ -12,6 +12,7 @@
 <%- include('./partials/navbar.ejs') %>
 <hr><br>
 <div class="container">
+<%- include('./partials/errors.ejs') %>
 <form action="/profile/<%= data.id %>/edit" method="post">
   <label for="">First Name</label><br>
   <input type="text" name="firstName" value="<%= data.firstName %>"> <br>
@@ -25,7 +26,7 @@
   <label for="">Phone Number</label><br>
   <input type="text" name="phoneNumber" value="<%=data.phoneNumber %> "><br><br>
 
-  <button>Update</button>
+  <button class="btn btn-success">Update</button>
 </form>
 </div>
 </body>

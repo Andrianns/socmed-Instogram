@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 const bcrypt = require('bcryptjs');
+var validator = require('validator')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -18,11 +19,41 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     username: {
       type:DataTypes.STRING,
+      allowNull:false,
+      validate:{
+        notNull:{
+          msg:'Username cannot be empty.'
+        },
+        notEmpty:{
+          msg:'Username cannot be empty.'
+        }
+      }
     },
     email: {
       type:DataTypes.STRING,
+      allowNull:false,
+      validate:{
+        notNull:{
+          msg:'Email cannot be empty.'
+        },
+        notEmpty:{
+          msg:'Email cannot be empty.'
+        }
+      }
     },
     password: {
+      type:DataTypes.STRING,
+      allowNull:false,
+      validate:{
+        notNull:{
+          msg:'Password cannot be empty.'
+        },
+        notEmpty:{
+          msg:'Password cannot be empty.'
+        }
+      }
+    },
+    role:{
       type:DataTypes.STRING
     }
   }, {

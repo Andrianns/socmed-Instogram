@@ -25,10 +25,11 @@
   <link href="signin.css" rel="stylesheet" />
   <style>
     body {
-        background-color: rgb(241, 158, 2);
+        background-color: rgb(240, 223, 207);
     }
 </style>
 </head>
+
 
 <body class="text-center">
   <div class="global-container"
@@ -38,6 +39,7 @@
       <div class="col-md-4">
         <form class="/register" method="post">
           <h1 class="h3 mb-3 font-weight-normal">Registeration <i class="bi bi-arrow-right-square"></i> </h1>
+          <%- include('./partials/errors.ejs') %>
           <div class="form-floating">
             <input type="text" name="firstName" class="form-control" id="name" placeholder="Name" />
             <label for="name">FirstName</label>
@@ -49,7 +51,11 @@
               <div class="invalid-feedback">
               </div>
               <div class="form-floating">
-                <input type="text" name="gender" class="form-control" id="gender" placeholder="Gender" />
+                <select name="gender" id="" class="form-control">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+                <!-- <input type="text" name="gender" class="form-control" id="gender" placeholder="Gender" /> -->
                 <label for="name">Gender</label>
                 <div class="invalid-feedback">
                 </div>
@@ -72,6 +78,14 @@
                           <input type="password" name="password" class="form-control" id="password"
                             placeholder="Password" />
                           <label for="Password">Password</label>
+
+                          <div class="form-floating">
+                          <select name="role" id="" class="form-control">
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                          </select>
+                          <label for="role">Role</label>
+                        </div>
                           <div class="invalid-feedback">
                           </div>
                         </div>
@@ -81,6 +95,7 @@
                             Register
                           </button>
                         </div>
+                        
         </form>
         <small class="d-block text-center mt-2"> Have Account ? <a href="/login">Please Login </a></small>
       </div>

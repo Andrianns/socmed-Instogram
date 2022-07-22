@@ -14,16 +14,35 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.UserProfile)
       Post.hasMany(models.Comment)
     }
+    
   }
   Post.init({
     caption: {
       type:DataTypes.STRING,
+      allowNull:false,
+      validate:{
+        notNull:{
+          msg:'Caption cannot be empty.'
+        },
+        notEmpty:{
+          msg:'Caption cannot be empty.'
+        }
+      }
     },
     totalLike: {
       type:DataTypes.INTEGER,
     },
     imageUrl: {
       type:DataTypes.STRING,
+      allowNull:false,
+      validate:{
+        notNull:{
+          msg:'Image Url cannot be empty.'
+        },
+        notEmpty:{
+          msg:'Image Url cannot be empty'
+        }
+      }
     },
     UserProfileId: {
       type:DataTypes.INTEGER

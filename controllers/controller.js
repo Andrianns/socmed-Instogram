@@ -1,28 +1,36 @@
 const {Post,StrangerPost,User,UserProfile,Comment} = require('../models')
 const { Op } = require('sequelize')
 const bcrypt = require('bcryptjs');
+let { getTime }= require('../helper/timeFormat')
+
 class Controller {
 
   static register(req, res) {
-		res.render('register')
+		let errors = req.query.err
+		res.render('register',{errors})
 	}
 
   static postRegister(req, res) {
-		const { firstName, lastName, gender, phoneNumber, username, email, password } = req.body
-		User.create({ username, email, password })
+		const { firstName, lastName, gender, phoneNumber, username, email, password, role } = req.body
+		User.create({ username, email, password, role })
 			.then((user) => {
 				return UserProfile.create({ firstName, lastName, gender, phoneNumber, UserId: user.id })
 			})
 			.then(() => {
 				res.redirect('/login')
 			})
-			.catch(err => {
-				res.send(err)
+			.catch((err) => {
+				let errors = err
+				if(err.name =='SequelizeValidationError'){
+					errors = err.errors.map((el)=>el.message)
+				}
+				res.redirect(`/register?err=${errors}`)
 			})
 	}
 
 	static login(req, res) {
-		res.render('login')
+		const {error} = req.query
+		res.render('login',{error})
 	}
 	static postLogin(req, res) {
 		const { username, password } = req.body
@@ -32,6 +40,7 @@ class Controller {
 					const isValidPassword = bcrypt.compareSync(password, user.password)
 					if (isValidPassword) {
 						req.session.UserId = user.id
+						req.session.role = user.role
 						// console.log(req.session)
 						// console.log(user)
 						return res.redirect(`/profile`)
@@ -76,11 +85,15 @@ class Controller {
     })
     .then((data)=>{
 			// res.send(data)
-      res.render('profile',{data})
+      res.render('profile',{data,getTime})
     })
+		.catch((err)=>{
+			res.send(err)
+		})
   }
 
   static addPost(req,res){
+		let errors = req.query.err
     const {id} = req.params
     UserProfile.findOne({
       include:{
@@ -91,7 +104,7 @@ class Controller {
       }
     })
     .then((data)=>{
-      res.render("addPost",{data})
+      res.render("addPost",{data,errors})
     })
     .catch((err)=>{
       res.send(err)
@@ -106,11 +119,16 @@ class Controller {
       res.redirect(`/profile`)
     })
     .catch((err)=>{
-      res.send(err)
+      let errors = err
+			if(err.name =='SequelizeValidationError'){
+				errors = err.errors.map((el)=>el.message)
+			}
+			res.redirect(`/profile/${userId}/addpost?err=${errors}`)
     })
   }
 
 	static readComment(req,res){
+		let errors = req.query.err
 		const {id} = req.params
 		Post.findByPk(id,{
 			include:{
@@ -118,7 +136,7 @@ class Controller {
 			}
 		})
 		.then((data)=>{
-			res.render('seeComment',{data})
+			res.render('seeComment',{data,errors})
 		})
 		.catch((err)=>{
 			res.send(err)
@@ -132,9 +150,17 @@ class Controller {
 		.then(()=>{
 			res.redirect(`/profile/${postId}/comment`)
 		})
+		.catch((err)=>{
+			let errors = err
+			if(err.name =='SequelizeValidationError'){
+				errors = err.errors.map((el)=>el.message)
+			}
+			res.redirect(`/profile/${postId}/comment?err=${errors}`)
+		})
 	}
 
 	static editProfile(req,res){
+		let errors = req.query.err
 		const{id} = req.params
     UserProfile.findOne({
       where:{
@@ -143,7 +169,7 @@ class Controller {
     })
     .then((data)=>{
 			// res.send(data)
-      res.render('editProfile',{data})
+      res.render('editProfile',{data,errors})
     })
 	}
 
@@ -160,7 +186,11 @@ class Controller {
 			res.redirect(`/profile`)
 		})
 		.catch((err)=>{
-			res.send(err)
+			let errors = err
+			if(err.name =='SequelizeValidationError'){
+				errors = err.errors.map((el)=>el.message)
+			}
+			res.redirect(`/profile/${id}/edit?err=${errors}`)
 		})
 	}
 
@@ -221,13 +251,14 @@ class Controller {
     }
 		Post.findAll(options)
 		.then((data)=>{
-			res.render('explore',{data})
+			res.render('explore',{data,getTime})
 		})
 		.catch((err)=>{
 			res.send(err)
 		})
 	}
 	static exploreComment(req,res){
+		let errors = req.query.err
 		const {id} = req.params
 		Post.findByPk(id,{
 			include:{
@@ -237,7 +268,7 @@ class Controller {
 		
 		.then((data)=>{
 			// res.send(data)
-			res.render("exploreComment",{data})
+			res.render("exploreComment",{data,errors})
 		})
 		.catch((err)=>{
 			res.send(err)
@@ -252,7 +283,11 @@ class Controller {
 			res.redirect(`/comment/${postId}`)
 		})
 		.catch((err)=>{
-			res.send(err)
+			let errors = err
+			if(err.name =='SequelizeValidationError'){
+				errors = err.errors.map((el)=>el.message)
+			}
+			res.redirect(`/comment/${postId}?err=${errors}`)
 		})
 	}
 
