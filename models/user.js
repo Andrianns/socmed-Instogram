@@ -38,7 +38,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Email cannot be empty.'
-        }
+        },
+        isEmail: {
+          args: true,
+          msg: 'harus memasukan email'
+        },
       }
     },
     password: {
@@ -50,7 +54,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Password cannot be empty.'
-        }
+        },
+        min: {
+          args: 8,
+          msg: 'password minimal 8 huruf'
+        },
       }
     },
     role:{

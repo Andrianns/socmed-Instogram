@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'First Name cannot be empty.'
+        },
+        isAlpha: {
+          args: true,
+          msg: 'first name harus berupa huruf'
         }
       }
     },
@@ -41,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Last Name cannot be empty.'
+        },
+        isAlpha: {
+          args: true,
+          msg: 'last name harus berupa huruf'
         }
       }
     },
@@ -53,6 +61,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Gender cannot be empty.'
+        },
+        isIn: {
+          args: [['Male', 'Female']],
+          msg: 'gender tidak diterima'
         }
       }
     },
@@ -65,6 +77,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Phone Number cannot be empty.'
+        },
+        len: {
+          args: [8,12],  
+          msg: 'phoneNumber berjumlah 8-12 angka'
         }
       }
     },
@@ -74,6 +90,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'UserProfile',
+    hooks: {
+      beforeCreate: function(userprofile) {
+        userprofile.firstName = userprofile.firstName.charAt(0).toUpperCase() + userprofile.firstName.slice(1);
+        userprofile.lastName = userprofile.lastName.charAt(0).toUpperCase() + userprofile.lastName.slice(1);
+      }
+    }
   });
   return UserProfile;
 };

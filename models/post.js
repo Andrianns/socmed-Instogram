@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Image Url cannot be empty'
+        },
+        isURL: {
+          args: false,
+          msg: 'imageUrl harus berupa link'
         }
       }
     },

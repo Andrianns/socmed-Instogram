@@ -73,7 +73,7 @@ class Controller {
     UserProfile.findOne({
       include:{
         model:Post,
-				order:[['caption','asc']]
+				order:[['caption','DESC']]
       },
       attributes:{
         exclude:["id"]
@@ -81,7 +81,6 @@ class Controller {
       where:{
         UserId : id
       },
-			
     })
     .then((data)=>{
 			// res.send(data)

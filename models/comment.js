@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty:{
           msg:'Comment cannot be empty'
+        },
+        notContains: {
+          args: 'kasar',
+          msg: 'caption tidak bisa bahasa kasar'
         }
       }
     },
