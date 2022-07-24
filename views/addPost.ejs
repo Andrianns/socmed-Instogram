@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <br>
+  <%- include('./partials/navbar.ejs') %>
+  <br><hr>
+  <div class="container">
+  <%- include('./partials/errors.ejs') %>
+  <form action="/profile/<%=data.UserId%>/addpost" method="post">
+  <label for="">Caption</label><br>
+  <input type="text" name="caption"><br> <br>
+
+  <label for="">Image</label><br>
+  <input type="text" name="imageUrl"><br> <br>
+  
+  <span for="" style="border: 10px green;">Save To <%= data.firstName %> </span>  
+  <input type="hidden" name="UserProfileId" value="<%= data.id %>">
+
+
+  <!-- <select name="UserProfileId" id="" disabled>
+    <option value="<%= data.UserId %>"><%= data.UserId %></option>
+  </select> -->
+  
+  <br> <br>
+
+  <button>Publish</button>
+  </form> 
+  </div>
+
+
+
+
+</body>
+</html>
