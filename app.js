@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5494;
+const port = 5494;
 const router = require('./routes/index');
 const session = require('express-session');
 
