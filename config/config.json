@@ -7,15 +7,10 @@
     "dialect": "postgres"
   },
   "production":{
-    "use_env_variable":"postgresql://postgres:DEWIh0ZfTQADUD3T4YrL@containers-us-west-62.railway.app:5494/railway",
-    "ssl":true,
-    "dialect":"postgres",
-    "protocol":"postgres",
-    "dialectOptions":{
-      "ssl":{
-        "require":true,
-        "rejectUnauthorized":false
-      }
-    }
+    "username": "postgres",
+    "password": "DEWIh0ZfTQADUD3T4YrL",
+    "database": "railway",
+    "host": "containers-us-west-62.railway.app",
+    "dialect": "postgres"
   }
 }
