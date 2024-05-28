@@ -1,9 +1,10 @@
 {
   "development": {
     "username": "postgres",
-    "password": "DEWIh0ZfTQADUD3T4YrL",
+    "password": "kwkszHOiVlBNAmuMtXeOEtObOcFwERRd",
     "database": "railway",
-    "host": "containers-us-west-62.railway.app",
+    "host": "viaduct.proxy.rlwy.net",
+    "port":"24442",
     "dialect": "postgres"
   },
   "production":{
