@@ -3,7 +3,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 const router = require('./routes/index');
 const session = require('express-session');
+const path = require('path');
 
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
