@@ -19,13 +19,14 @@
   </head>
   <body>
     <header class="py-2">
-      <%- include('./partials/navbar.ejs', {
+      <% const navbarConfig = {
         activePage: 'profile',
         showAddPost: true,
         userId: data.UserId,
         searchAction: '/',
         searchPlaceholder: 'Search by caption',
-      }) %>
+      }; %>
+      <%- include('./partials/navbar.ejs', navbarConfig) %>
     </header>
     <main class="container py-4">
       <% const displayName =
@@ -70,9 +71,8 @@
         </div>
         <% } else { %>
         <div class="feed-grid">
-        <% data.Posts.forEach((post) => {
-             const liked = likedPosts && likedPosts[post.id];
-        %>
+          <% data.Posts.forEach((post) => { %>
+          <% const liked = likedPosts && likedPosts[post.id]; %>
           <article class="post-card">
             <div class="post-card-media">
               <img src="<%= post.imageUrl %>" alt="Post image" />
@@ -116,7 +116,7 @@
               </div>
             </div>
           </article>
-        <% }); %>
+          <% }); %>
         </div>
         <% } %>
       </section>

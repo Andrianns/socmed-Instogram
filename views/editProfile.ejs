@@ -19,7 +19,14 @@
   </head>
   <body>
     <header class="py-2">
-      <%- include('./partials/navbar.ejs', { activePage: 'profile', showAddPost: true, userId: data.UserId, searchAction: '/', searchPlaceholder: 'Search by caption' }) %>
+      <% const navbarConfig = {
+        activePage: 'profile',
+        showAddPost: true,
+        userId: data.UserId,
+        searchAction: '/',
+        searchPlaceholder: 'Search by caption',
+      }; %>
+      <%- include('./partials/navbar.ejs', navbarConfig) %>
     </header>
     <main class="container py-4">
       <section class="hero-card mb-4">

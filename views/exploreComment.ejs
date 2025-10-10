@@ -19,9 +19,13 @@
   </head>
   <body>
     <header class="py-2">
-      <%- include('./partials/navbar.ejs', { activePage: 'explore',
-      searchAction: '/', searchPlaceholder: 'Search the community', searchValue:
-      '' }) %>
+      <% const navbarConfig = {
+        activePage: 'explore',
+        searchAction: '/',
+        searchPlaceholder: 'Search the community',
+        searchValue: '',
+      }; %>
+      <%- include('./partials/navbar.ejs', navbarConfig) %>
     </header>
     <main class="container py-4">
       <article class="post-card mb-5 mx-auto">
@@ -52,7 +56,7 @@
               </div>
               <p class="mb-0"><%= comment.comment %></p>
             </div>
-            <% }) %>
+            <% }); %>
           </div>
           <% } %>
           <div class="auth-card mt-4 mx-auto" style="max-width: 32rem">

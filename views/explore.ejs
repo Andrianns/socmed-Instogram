@@ -19,9 +19,13 @@
   </head>
   <body>
     <header class="py-2">
-      <%- include('./partials/navbar.ejs', { activePage: 'explore',
-      searchAction: '/', searchPlaceholder: 'Search the community', searchValue:
-      typeof search !== 'undefined' ? search : '' }) %>
+      <% const navbarConfig = {
+        activePage: 'explore',
+        searchAction: '/',
+        searchPlaceholder: 'Search the community',
+        searchValue: typeof search !== 'undefined' ? search : '',
+      }; %>
+      <%- include('./partials/navbar.ejs', navbarConfig) %>
     </header>
     <main class="container py-4">
       <section class="hero-card mb-5">
@@ -49,8 +53,8 @@
       </div>
       <% } else { %>
       <div class="feed-grid">
-        <% data.forEach((post) => { const liked = likedPosts &&
-        likedPosts[post.id]; %>
+        <% data.forEach((post) => { %>
+        <% const liked = likedPosts && likedPosts[post.id]; %>
         <article class="post-card">
           <div class="post-card-media">
             <img src="<%= post.imageUrl %>" alt="Post image" />
@@ -84,7 +88,7 @@
             </div>
           </div>
         </article>
-        <% }) %>
+        <% }); %>
       </div>
       <% } %>
     </main>
