@@ -19,13 +19,17 @@
   </head>
   <body>
     <header class="py-2">
-      <%- include('./partials/navbar.ejs', { activePage: 'profile', showAddPost:
-      true, userId: data.UserId, searchAction: '/', searchPlaceholder: 'Search
-      by caption' }) %>
+      <%- include('./partials/navbar.ejs', {
+        activePage: 'profile',
+        showAddPost: true,
+        userId: data.UserId,
+        searchAction: '/',
+        searchPlaceholder: 'Search by caption',
+      }) %>
     </header>
     <main class="container py-4">
-      <% const displayName = data.fullName || [data.firstName,
-      data.lastName].filter(Boolean).join(' ') || 'friend'; %>
+      <% const displayName =
+        data.fullName || [data.firstName, data.lastName].filter(Boolean).join(' ') || 'friend'; %>
       <section class="hero-card mb-5">
         <div class="row align-items-center gy-4">
           <div class="col-lg-8">
@@ -66,8 +70,9 @@
         </div>
         <% } else { %>
         <div class="feed-grid">
-          <% data.Posts.forEach((post) => { const liked = likedPosts &&
-          likedPosts[post.id]; %>
+        <% data.Posts.forEach((post) => {
+             const liked = likedPosts && likedPosts[post.id];
+        %>
           <article class="post-card">
             <div class="post-card-media">
               <img src="<%= post.imageUrl %>" alt="Post image" />
@@ -111,7 +116,7 @@
               </div>
             </div>
           </article>
-          <% }) %>
+        <% }); %>
         </div>
         <% } %>
       </section>
