@@ -1,5 +1,11 @@
-<% if (errors) { %>
-  <% errors.split(',').forEach((el) => { %>
-    <p style="color: red;"><%= el %> </p>
-  <% }) %>
-<% } %>
+<% if (errors) { %> <% const messageSource = Array.isArray(errors) ? errors :
+typeof errors === 'string' ? errors.split(',') : []; %> <% if
+(messageSource.length) { %>
+<div class="alert alert-danger alert-custom text-start" role="alert">
+  <ul class="mb-0 ps-3">
+    <% messageSource.forEach((msg) => { %>
+    <li><%= msg %></li>
+    <% }) %>
+  </ul>
+</div>
+<% } %> <% } %>

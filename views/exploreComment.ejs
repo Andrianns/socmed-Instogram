@@ -1,52 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
-  <title>Comment</title>
-</head>
-<body>
-  <br>
-  <%- include('./partials/navbar.ejs') %>
-  <hr> <br>
-  <form action="/comment/<%=data.id%>" method="post">
-  <div class="container">
-        <div class="card" style=" width: 30rem;">
-          <img src="<%= data.imageUrl %>" class="card-img-top" alt="...">
-          <div class="card-body">
-            <p class="card-title">
-              Likes : <%=data.totalLike%>
-            </p>
-            <h5 class="card-text">
-              <%= data.caption %>
-            </h5>
-            <label for="">comment : </label>
-            <% data.Comments.forEach((el,index)=>{ %>
-              <h6 card-text>
-                <%= index +1  %> -
-                <%= el.comment %> 
-              </h6>
-            <% }) %> 
-            <br>
-            <input type="text" name="comment"> <br> <br>
-            <input type="hidden" name="PostId"value="<%=data.id%>">
-            <Button class="btn btn-danger">Add Comment</Button> <br> <br>
-            <%- include('./partials/errors.ejs') %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Explore Comments | Instogram</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="icon" type="image/jpeg" href="/instogram.jpg" />
+  </head>
+  <body>
+    <header class="py-2">
+      <%- include('./partials/navbar.ejs', { activePage: 'explore',
+      searchAction: '/', searchPlaceholder: 'Search the community', searchValue:
+      '' }) %>
+    </header>
+    <main class="container py-4">
+      <article class="post-card mb-5 mx-auto">
+        <div class="post-card-media">
+          <img src="<%= data.imageUrl %>" alt="Post image" />
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge-soft"
+              ><i class="bi bi-heart-fill me-1"></i><%= data.totalLike %>
+              likes</span
+            >
+            <small class="muted-text"><%= getTime(data.createdAt) %></small>
+          </div>
+          <p class="mb-2"><%= data.caption %></p>
+          <h3 class="section-title">Comments</h3>
+          <% if (!data.Comments.length) { %>
+          <p class="muted-text mb-4">Be the first to respond to this post.</p>
+          <% } else { %>
+          <div class="d-flex flex-column gap-3 mb-4">
+            <% data.Comments.forEach((comment, index) => { %>
+            <div class="comment-card">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">Comment <%= index + 1 %></span>
+                <small class="muted-text"
+                  ><%= getTime(comment.createdAt) %></small
+                >
+              </div>
+              <p class="mb-0"><%= comment.comment %></p>
+            </div>
+            <% }) %>
+          </div>
+          <% } %>
+          <div class="auth-card mt-4 mx-auto" style="max-width: 32rem">
+            <h4 class="fw-bold mb-3">Join the discussion</h4>
+            <%- include('./partials/errors.ejs', { errors }) %>
+            <form action="/comment/<%= data.id %>" method="post">
+              <div class="form-floating mb-3">
+                <textarea
+                  class="form-control"
+                  id="comment"
+                  name="comment"
+                  placeholder="Leave a comment"
+                  style="height: 120px"
+                  required
+                ></textarea>
+                <label for="comment">Your comment</label>
+              </div>
+              <input type="hidden" name="PostId" value="<%= data.id %>" />
+              <div
+                class="d-flex flex-column flex-sm-row justify-content-between gap-2"
+              >
+                <button
+                  class="btn btn-primary btn-pill order-1 order-sm-0"
+                  type="submit"
+                >
+                  <i class="bi bi-send me-2"></i>Add comment
+                </button>
+                <a
+                  class="btn btn-outline-secondary btn-pill order-0 order-sm-1"
+                  href="/"
+                >
+                  <i class="bi bi-arrow-left-circle me-1"></i>Back to explore
+                </a>
+              </div>
+            </form>
           </div>
         </div>
-    </div>
-  </div>
-</form>
-</body>
-<style>
-  .card{
-  margin: auto;
-  margin-bottom: 25px;
-  width: 50%;
-  padding: 10px;
-  border: 3px solid green;
-}
-</style>
+      </article>
+    </main>
+    <footer class="footer-space">Spread kindness in the comments 💬</footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
