@@ -8,21 +8,38 @@ const env = process.env.NODE_ENV || 'development';
 const configPath = path.resolve(__dirname, '..', 'config', 'config.js'); // Fix path for config file
 const config = require(configPath)[env];
 const db = {};
-const pg = require('pg');
+const useNeonServerless = process.env.NEON_USE_SERVERLESS === 'true';
+let dialectModule;
+
+if (useNeonServerless) {
+  if (typeof global.WebSocket === 'undefined') {
+    global.WebSocket = require('ws');
+  }
+  dialectModule = require('@neondatabase/serverless');
+} else {
+  dialectModule = require('pg');
+}
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], {
-    ...config,
+const { use_env_variable, ...sequelizeOptions } = config;
+
+if (use_env_variable) {
+  sequelize = new Sequelize(process.env[use_env_variable], {
+    ...sequelizeOptions,
     dialect: 'postgres',
-    dialectModule: pg,
+    dialectModule,
   });
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, {
-    ...config,
-    dialect: 'postgres',
-    dialectModule: pg,
-  });
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    {
+      ...sequelizeOptions,
+      dialect: 'postgres',
+      dialectModule,
+    }
+  );
 }
 
 fs.readdirSync(__dirname)
